@@ -25,8 +25,7 @@ config = tf.ConfigProto(device_count={'GPU': 0}) if use_gpu == "false" else None
 with tf.compat.v1.Session(config=config) as sess:
     # load pre-trained model
     saver = tf.compat.v1.train.Saver ()
-    saver.restore(sess, "models/iphone")
-    # saver.restore(sess, "models/" + phone)
+    saver.restore(sess, "models/" + phone)
 
     test_dir = "test_photos/" + phone + "/"
     test_photos = [f for f in os.listdir(test_dir) if os.path.isfile(test_dir + f)]
