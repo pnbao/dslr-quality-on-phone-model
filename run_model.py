@@ -64,6 +64,6 @@ with tf.compat.v1.Session(config=config) as sess:
 
         # save the results as .png images
 
-        imageio.imwrite("results/" + photo_name + "_original.png", tf.image.convert_image_dtype(image_crop, dtype=tf.uint8, saturate=False))
-        imageio.imwrite("results/" + photo_name + "_processed.png", tf.image.convert_image_dtype(enhanced_image, dtype=tf.uint8, saturate=False))
-        imageio.imwrite("results/" + photo_name + "_before_after.png", tf.image.convert_image_dtype(before_after, dtype=tf.uint8, saturate=False))
+        imageio.imwrite("results/" + photo_name + "_original.png", image_crop.astype(np.uint8))
+        imageio.imwrite("results/" + photo_name + "_processed.png", enhanced_image.astype(np.uint8))
+        imageio.imwrite("results/" + photo_name + "_before_after.png", before_after.astype(np.uint8))
