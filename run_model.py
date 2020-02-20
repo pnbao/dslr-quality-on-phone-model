@@ -18,28 +18,28 @@ import imageio
 
 # process command arguments
 phone, resolution, use_gpu = utils.process_command_args(sys.argv)
+test_dir = "test_photos/" + phone + "/"
+test_photos = [f for f in os.listdir(test_dir) if os.path.isfile(test_dir + f)]
 
-# disable gpu if specified
-config = tf.ConfigProto(device_count={'GPU': 0}) if use_gpu == "false" else None
+for photo in test_photos: 
+    # disable gpu if specified
+    config = tf.ConfigProto(device_count={'GPU': 0}) if use_gpu == "false" else None
+        
+    # get all available image resolutions
+    res_sizes = utils.get_resolutions(test_dir + photo)
 
-with tf.compat.v1.Session(config=config) as sess:
-    test_dir = "test_photos/" + phone + "/"
-    test_photos = [f for f in os.listdir(test_dir) if os.path.isfile(test_dir + f)]
+    # get the specified image resolution
+    IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_SIZE = utils.get_specified_res(res_sizes, phone, resolution)
 
-    for photo in test_photos: 
-        # get all available image resolutions
-        res_sizes = utils.get_resolutions(test_dir + photo)
+    # create placeholders for input images
+    x_ = tf.compat.v1.placeholder(tf.float32, [None, IMAGE_SIZE])
+    x_image = tf.reshape(x_, [-1, IMAGE_HEIGHT, IMAGE_WIDTH, 3])
 
-        # get the specified image resolution
-        IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_SIZE = utils.get_specified_res(res_sizes, phone, resolution)
+    # generate enhanced image
+    enhanced = resnet(x_image)
 
-        # create placeholders for input images
-        x_ = tf.compat.v1.placeholder(tf.float32, [None, IMAGE_SIZE])
-        x_image = tf.reshape(x_, [-1, IMAGE_HEIGHT, IMAGE_WIDTH, 3])
-
-        # generate enhanced image
-        enhanced = resnet(x_image)
-
+    with tf.compat.v1.Session(config=config) as sess:
+        
         # load pre-trained model
         saver = tf.compat.v1.train.Saver ()
         saver.restore(sess, "models/" + phone)
