@@ -13,6 +13,7 @@ from PIL import Image
 import utils
 import os
 import sys
+import imageio
 
 # process command arguments
 phone, resolution, use_gpu = utils.process_command_args(sys.argv)
@@ -33,10 +34,10 @@ x_image = tf.reshape(x_, [-1, IMAGE_HEIGHT, IMAGE_WIDTH, 3])
 # generate enhanced image
 enhanced = resnet(x_image)
 
-with tf.Session(config=config) as sess:
+with tf.compat.v1.Session(config=config) as sess:
 
     # load pre-trained model
-    saver = tf.train.Saver()
+    saver = tf.compat.v1.train.Saver ()
     saver.restore(sess, "models/" + phone)
 
     test_dir = "test_photos/" + phone + "/"
@@ -47,7 +48,7 @@ with tf.Session(config=config) as sess:
         # load training image and crop it if necessary
 
         print("Processing image " + photo)
-        image = np.float16(np.array(Image.fromarray(misc.imread(test_dir + photo)).resize((2048, 1536)))) / 255 
+        image = np.float16(np.array(Image.fromarray(imageio.imread(test_dir + photo)).resize((2048, 1536)))) / 255 
         # image = np.float16(np.array(Image.fromarray(misc.imread(test_dir + photo)).resize(res_sizes[phone]))) / 255 1536, 2048
         image_crop = utils.extract_crop(image, resolution, phone, res_sizes)
         image_crop_2d = np.reshape(image_crop, [1, IMAGE_SIZE])
@@ -62,6 +63,6 @@ with tf.Session(config=config) as sess:
 
         # save the results as .png images
 
-        misc.imsave("results/" + photo_name + "_original.png", image_crop)
-        misc.imsave("results/" + photo_name + "_processed.png", enhanced_image)
-        misc.imsave("results/" + photo_name + "_before_after.png", before_after)
+        imageio.imwrite("results/" + photo_name + "_original.png", image_crop)
+        imageio.imwrite("results/" + photo_name + "_processed.png", enhanced_image)
+        imageio.imwrite("results/" + photo_name + "_before_after.png", before_after)

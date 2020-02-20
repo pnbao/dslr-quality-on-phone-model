@@ -2,7 +2,7 @@ import tensorflow as tf
 
 def resnet(image):
 
-    with tf.variable_scope("generator"):
+    with tf.compat.v1.variable_scope("generator"):
 
         # Convolutional layer
 
@@ -71,7 +71,7 @@ def resnet(image):
     return prediction
 
 def weight_variable(shape, name):
-    initial = tf.truncated_normal(shape, stddev=0.01)
+    initial = tf.random.truncated_normal(shape, stddev=0.01)
     return tf.Variable(initial, name=name)
 
 def bias_variable(shape, name):
