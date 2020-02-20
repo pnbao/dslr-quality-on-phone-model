@@ -19,24 +19,10 @@ import imageio
 # process command arguments
 phone, resolution, use_gpu = utils.process_command_args(sys.argv)
 
-# get all available image resolutions
-res_sizes = utils.get_resolutions()
-
-# get the specified image resolution
-IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_SIZE = utils.get_specified_res(res_sizes, phone, resolution)
-
 # disable gpu if specified
 config = tf.ConfigProto(device_count={'GPU': 0}) if use_gpu == "false" else None
 
-# create placeholders for input images
-x_ = tf.compat.v1.placeholder(tf.float32, [None, IMAGE_SIZE])
-x_image = tf.reshape(x_, [-1, IMAGE_HEIGHT, IMAGE_WIDTH, 3])
-
-# generate enhanced image
-enhanced = resnet(x_image)
-
 with tf.compat.v1.Session(config=config) as sess:
-
     # load pre-trained model
     saver = tf.compat.v1.train.Saver ()
     saver.restore(sess, "models/" + phone)
@@ -46,8 +32,20 @@ with tf.compat.v1.Session(config=config) as sess:
 
     for photo in test_photos:
 
-        # load training image and crop it if necessary
+        # get all available image resolutions
+        res_sizes = utils.get_resolutions(test_dir + photo)
 
+        # get the specified image resolution
+        IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_SIZE = utils.get_specified_res(res_sizes, phone, resolution)
+
+        # create placeholders for input images
+        x_ = tf.compat.v1.placeholder(tf.float32, [None, IMAGE_SIZE])
+        x_image = tf.reshape(x_, [-1, IMAGE_HEIGHT, IMAGE_WIDTH, 3])
+
+        # generate enhanced image
+        enhanced = resnet(x_image)
+
+        # load training image and crop it if necessary
         print("Processing image " + photo)
         image = np.float16(np.array(Image.fromarray(imageio.imread(test_dir + photo)).resize(tuple(res_sizes[phone][::-1])))) / 255 
         # image = np.float16(np.array(Image.fromarray(misc.imread(test_dir + photo)).resize(res_sizes[phone]))) / 255 1536, 2048
