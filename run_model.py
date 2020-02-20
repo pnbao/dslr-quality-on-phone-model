@@ -22,6 +22,8 @@ test_dir = "test_photos/" + phone + "/"
 test_photos = [f for f in os.listdir(test_dir) if os.path.isfile(test_dir + f)]
 
 for photo in test_photos:
+    print("Processing image " + photo)
+
     # disable gpu if specified
     config = tf.ConfigProto(
         device_count={'GPU': 0}) if use_gpu == "false" else None
@@ -47,7 +49,6 @@ for photo in test_photos:
         saver.restore(sess, "models/" + phone)
 
         # load training image and crop it if necessary
-        print("Processing image " + photo)
         image = np.float16(np.array(Image.fromarray(
             imageio.imread(test_dir + photo)))) / 255
         # image = np.float16(np.array(Image.fromarray(imageio.imread(test_dir + photo)).resize(tuple(res_sizes[phone][::-1])))) / 255
