@@ -64,10 +64,10 @@ for photo in test_photos:
         photo_name = photo.rsplit(".", 1)[0]
 
         # save the results as .png images
-        imageio.imwrite("results/" + photo_name + "_original.png", image_crop)
-        imageio.imwrite("results/" + photo_name +
-                        "_processed.png", enhanced_image)
-        imageio.imwrite("results/" + photo_name +
+        # imageio.imwrite("results/" + photo_name + "_original.png", image_crop)
+        # imageio.imwrite("results/" + photo_name +
+        #                 "_processed.png", enhanced_image)
+        imageio.imwrite("results/" + photo_name + "_" + model +
                         "_before_after.png", before_after)
 
     tf.compat.v1.reset_default_graph()
