@@ -1,4 +1,5 @@
 import sys
+import imageio
 
 def process_command_args(arguments):
 
@@ -19,27 +20,27 @@ def process_command_args(arguments):
 
     if phone == "":
         print("\nPlease specify the camera model by running the script with the following parameter:\n")
-        print("python run_model.py model={iphone,blackberry,sony}\n")
+        print("python run_model.py model={iphone,blackberry,sony,custom}\n")
         sys.exit()
 
-    if phone not in ["iphone", "sony", "blackberry"]:
+    if phone not in ["iphone", "sony", "blackberry", "custom"]:
         print("\nPlease specify the correct camera model:\n")
-        print("python run_model.py model={iphone,blackberry,sony}\n")
+        print("python run_model.py model={iphone,blackberry,sony,custom}\n")
         sys.exit()
 
     if resolution not in ["orig", "high", "medium", "small", "tiny"]:
         print("\nPlease specify the correct resolution:\n")
-        print("python run_model.py model={iphone,blackberry,sony} resolution={orig,high,medium,small,tiny}\n")
+        print("python run_model.py model={iphone,blackberry,sony,custom} resolution={orig,high,medium,small,tiny}\n")
         sys.exit()
 
     if use_gpu not in["true", "false"]:
         print("\nPlease specify correctly the gpu usage:\n")
-        print("python run_model.py model={iphone,blackberry,sony} use_gpu={true,false}\n")
+        print("python run_model.py model={iphone,blackberry,sony,custom} use_gpu={true,false}\n")
         sys.exit()
 
     return phone, resolution, use_gpu
 
-def get_resolutions():
+def get_resolutions(image):
 
     # IMAGE_HEIGHT, IMAGE_WIDTH
 
@@ -52,6 +53,7 @@ def get_resolutions():
     res_sizes["medium"] = [1024, 1366]
     res_sizes["small"] = [768, 1024]
     res_sizes["tiny"] = [600, 800]
+    res_sizes["custom"] = list(imageio.imread(image).shape)[:-1]
 
     return res_sizes
 
