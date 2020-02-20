@@ -47,7 +47,8 @@ with tf.Session(config=config) as sess:
         # load training image and crop it if necessary
 
         print("Processing image " + photo)
-        image = np.float16(np.array(Image.fromarray(misc.imread(test_dir + photo)).resize(res_sizes[phone]))) / 255
+        image = np.float16(np.array(Image.fromarray(misc.imread(test_dir + photo)).resize(2048, 1536))) / 255 
+        # image = np.float16(np.array(Image.fromarray(misc.imread(test_dir + photo)).resize(res_sizes[phone]))) / 255 1536, 2048
         image_crop = utils.extract_crop(image, resolution, phone, res_sizes)
         image_crop_2d = np.reshape(image_crop, [1, IMAGE_SIZE])
 
