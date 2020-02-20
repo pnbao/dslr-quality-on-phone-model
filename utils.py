@@ -1,6 +1,7 @@
 import sys
 import imageio
 
+
 def process_command_args(arguments):
 
     phone = ""
@@ -30,15 +31,18 @@ def process_command_args(arguments):
 
     if resolution not in ["orig", "high", "medium", "small", "tiny"]:
         print("\nPlease specify the correct resolution:\n")
-        print("python run_model.py model={iphone,blackberry,sony,custom} resolution={orig,high,medium,small,tiny}\n")
+        print(
+            "python run_model.py model={iphone,blackberry,sony,custom} resolution={orig,high,medium,small,tiny}\n")
         sys.exit()
 
     if use_gpu not in["true", "false"]:
         print("\nPlease specify correctly the gpu usage:\n")
-        print("python run_model.py model={iphone,blackberry,sony,custom} use_gpu={true,false}\n")
+        print(
+            "python run_model.py model={iphone,blackberry,sony,custom} use_gpu={true,false}\n")
         sys.exit()
 
     return phone, resolution, use_gpu
+
 
 def get_resolutions(image):
 
@@ -53,9 +57,10 @@ def get_resolutions(image):
     res_sizes["medium"] = [1024, 1366]
     res_sizes["small"] = [768, 1024]
     res_sizes["tiny"] = [600, 800]
-    res_sizes["custom"] = list(imageio.imread(image).shape)[:-1]
+    res_sizes["custom"] = list(imageio.imread(image, pilmode="RGB").shape)[:-1]
 
     return res_sizes
+
 
 def get_specified_res(res_sizes, phone, resolution):
 
@@ -70,6 +75,7 @@ def get_specified_res(res_sizes, phone, resolution):
 
     return IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_SIZE
 
+
 def extract_crop(image, resolution, phone, res_sizes):
 
     if resolution == "orig":
@@ -83,4 +89,4 @@ def extract_crop(image, resolution, phone, res_sizes):
         x_down = x_up + res_sizes[resolution][1]
         y_down = y_up + res_sizes[resolution][0]
 
-        return image[y_up : y_down, x_up : x_down, :]
+        return image[y_up: y_down, x_up: x_down, :]
