@@ -39,7 +39,7 @@ for photo in test_photos:
     enhanced = resnet(x_image)
 
     with tf.compat.v1.Session(config=config) as sess:
-        
+
         # load pre-trained model
         saver = tf.compat.v1.train.Saver ()
         saver.restore(sess, "models/" + phone)
@@ -62,3 +62,5 @@ for photo in test_photos:
         imageio.imwrite("results/" + photo_name + "_original.png", image_crop)
         imageio.imwrite("results/" + photo_name + "_processed.png", enhanced_image)
         imageio.imwrite("results/" + photo_name + "_before_after.png", before_after)
+
+    tf.reset_default_graph()
