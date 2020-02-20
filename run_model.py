@@ -10,6 +10,7 @@ import numpy as np
 import tensorflow as tf
 from model import resnet
 from PIL import Image
+from skimage import img_as_ubyte
 import utils
 import os
 import sys
@@ -28,7 +29,7 @@ IMAGE_HEIGHT, IMAGE_WIDTH, IMAGE_SIZE = utils.get_specified_res(res_sizes, phone
 config = tf.ConfigProto(device_count={'GPU': 0}) if use_gpu == "false" else None
 
 # create placeholders for input images
-x_ = tf.placeholder(tf.float32, [None, IMAGE_SIZE])
+x_ = tf.compat.v1.placeholder(tf.float32, [None, IMAGE_SIZE])
 x_image = tf.reshape(x_, [-1, IMAGE_HEIGHT, IMAGE_WIDTH, 3])
 
 # generate enhanced image
@@ -63,6 +64,6 @@ with tf.compat.v1.Session(config=config) as sess:
 
         # save the results as .png images
 
-        imageio.imwrite("results/" + photo_name + "_original.png", image_crop)
-        imageio.imwrite("results/" + photo_name + "_processed.png", enhanced_image)
-        imageio.imwrite("results/" + photo_name + "_before_after.png", before_after)
+        imageio.imwrite("results/" + photo_name + "_original.png", img_as_ubyte(image_crop))
+        imageio.imwrite("results/" + photo_name + "_processed.png", img_as_ubyte(enhanced_image))
+        imageio.imwrite("results/" + photo_name + "_before_after.png", img_as_ubyte(before_after))
