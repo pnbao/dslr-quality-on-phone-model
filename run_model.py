@@ -17,7 +17,7 @@ import sys
 import imageio
 
 # process command arguments
-phone, resolution, use_gpu = utils.process_command_args(sys.argv)
+phone, resolution, use_gpu, model = utils.process_command_args(sys.argv)
 test_dir = "test_photos/" + phone + "/"
 test_photos = [f for f in os.listdir(test_dir) if os.path.isfile(test_dir + f)]
 
@@ -46,7 +46,7 @@ for photo in test_photos:
 
         # load pre-trained model
         saver = tf.compat.v1.train.Saver()
-        saver.restore(sess, "models/" + phone)
+        saver.restore(sess, "models/" + model)
 
         # load training image and crop it if necessary
         image = np.float16(np.array(Image.fromarray(

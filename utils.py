@@ -7,10 +7,11 @@ def process_command_args(arguments):
     phone = ""
     resolution = "orig"
     use_gpu = "true"
+    model = "sony"
 
     for args in arguments:
 
-        if args.startswith("model"):
+        if args.startswith("phone"):
             phone = args.split("=")[1]
 
         if args.startswith("resolution"):
@@ -19,29 +20,37 @@ def process_command_args(arguments):
         if args.startswith("use_gpu"):
             use_gpu = args.split("=")[1]
 
+        if args.startswith("model"):
+            model = args.split("=")[1]
+
     if phone == "":
         print("\nPlease specify the camera model by running the script with the following parameter:\n")
-        print("python run_model.py model={iphone,blackberry,sony,custom}\n")
+        print("python run_model.py phone={iphone,blackberry,sony,custom}\n")
         sys.exit()
 
     if phone not in ["iphone", "sony", "blackberry", "custom"]:
         print("\nPlease specify the correct camera model:\n")
-        print("python run_model.py model={iphone,blackberry,sony,custom}\n")
+        print("python run_model.py phone={iphone,blackberry,sony,custom}\n")
         sys.exit()
 
     if resolution not in ["orig", "high", "medium", "small", "tiny"]:
         print("\nPlease specify the correct resolution:\n")
         print(
-            "python run_model.py model={iphone,blackberry,sony,custom} resolution={orig,high,medium,small,tiny}\n")
+            "python run_model.py phone={iphone,blackberry,sony,custom} resolution={orig,high,medium,small,tiny}\n")
         sys.exit()
 
     if use_gpu not in["true", "false"]:
         print("\nPlease specify correctly the gpu usage:\n")
         print(
-            "python run_model.py model={iphone,blackberry,sony,custom} use_gpu={true,false}\n")
+            "python run_model.py phone={iphone,blackberry,sony,custom} use_gpu={true,false}\n")
+        sys.exit()
+    
+    if model not in ["iphone", "sony", "blackberry"]:
+        print("\nPlease specify the correct pre-trained model:\n")
+        print("python run_model.py model={iphone,blackberry,sony}\n")
         sys.exit()
 
-    return phone, resolution, use_gpu
+    return phone, resolution, use_gpu, model
 
 
 def get_resolutions(image):
