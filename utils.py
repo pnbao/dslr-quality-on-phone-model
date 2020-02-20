@@ -45,7 +45,7 @@ def get_resolutions():
 
     res_sizes = {}
 
-    res_sizes["iphone"] = [1536, 2048]
+    res_sizes["iphone"] = [2048, 1536]
     res_sizes["blackberry"] = [1560, 2080]
     res_sizes["sony"] = [1944, 2592]
     res_sizes["high"] = [1260, 1680]

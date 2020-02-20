@@ -9,6 +9,7 @@ from scipy import misc
 import numpy as np
 import tensorflow as tf
 from model import resnet
+from PIL import Image
 import utils
 import os
 import sys
@@ -46,8 +47,7 @@ with tf.Session(config=config) as sess:
         # load training image and crop it if necessary
 
         print("Processing image " + photo)
-        image = np.float16(misc.imresize(misc.imread(test_dir + photo), res_sizes[phone])) / 255
-
+        image = np.float16(np.array(Image.fromarray(misc.imread(test_dir + photo)).resize(res_sizes[phone]))) / 255
         image_crop = utils.extract_crop(image, resolution, phone, res_sizes)
         image_crop_2d = np.reshape(image_crop, [1, IMAGE_SIZE])
 
