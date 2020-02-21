@@ -8,7 +8,7 @@
 from scipy import misc
 import numpy as np
 import tensorflow as tf
-from model import resnet
+from model import resnet, PyNET
 from PIL import Image
 from skimage import img_as_ubyte
 import utils
@@ -40,8 +40,10 @@ for photo in test_photos:
     x_image = tf.reshape(x_, [-1, IMAGE_HEIGHT, IMAGE_WIDTH, 3])
 
     # generate enhanced image
-    enhanced = resnet(x_image)
-
+    # enhanced = resnet(x_image)
+    output_l0, output_l1, output_l2, output_l3, output_l4, output_l5 = PyNET(x_, instance_norm=True, instance_norm_level_1=False)
+    enhanced = output_l0
+    
     with tf.compat.v1.Session(config=config) as sess:
 
         # load pre-trained model
