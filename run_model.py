@@ -36,11 +36,13 @@ for photo in test_photos:
         res_sizes, phone, resolution)
 
     # create placeholders for input images
-    x_ = tf.compat.v1.placeholder(tf.float32, [None, IMAGE_SIZE])
-    x_image = tf.reshape(x_, [-1, IMAGE_HEIGHT, IMAGE_WIDTH, 3])
+    # x_ = tf.compat.v1.placeholder(tf.float32, [None, IMAGE_SIZE])
+    # x_image = tf.reshape(x_, [-1, IMAGE_HEIGHT, IMAGE_WIDTH, 3])
+    x_ = tf.placeholder(tf.float32, [1, IMAGE_HEIGHT, IMAGE_WIDTH, 4])
+
     # generate enhanced image
     # enhanced = resnet(x_image)
-    output_l0, output_l1, output_l2, output_l3, output_l4, output_l5 = PyNET(x_image, instance_norm=True, instance_norm_level_1=False)
+    output_l0, output_l1, output_l2, output_l3, output_l4, output_l5 = PyNET(x_, instance_norm=True, instance_norm_level_1=False)
     enhanced = output_l0
 
     with tf.compat.v1.Session(config=config) as sess:
