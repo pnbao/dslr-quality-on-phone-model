@@ -45,9 +45,9 @@ def process_command_args(arguments):
             "python run_model.py phone={iphone,blackberry,sony,custom} use_gpu={true,false}\n")
         sys.exit()
     
-    if model not in ["iphone", "sony", "blackberry"]:
+    if model not in ["iphone", "sony", "blackberry", "pynet_level_0.ckpt"]:
         print("\nPlease specify the correct pre-trained model:\n")
-        print("python run_model.py model={iphone,blackberry,sony}\n")
+        print("python run_model.py model={iphone,blackberry,sony,pynet_level_0.ckpt}\n")
         sys.exit()
 
     return phone, resolution, use_gpu, model
