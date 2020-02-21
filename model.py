@@ -99,7 +99,7 @@ def _instance_norm(net):
 
 def PyNET(input, instance_norm=True, instance_norm_level_1=False):
 
-    with tf.variable_scope("generator"):
+    with tf.compat.v1.variable_scope("generator"):
 
         # -----------------------------------------
         # Downsampling layers
@@ -294,7 +294,7 @@ def _conv_init_vars(net, out_channels, filter_size, transpose=False):
     else:
         weights_shape = [filter_size, filter_size, out_channels, in_channels]
 
-    weights_init = tf.Variable(tf.truncated_normal(weights_shape, stddev=0.01, seed=1), dtype=tf.float32)
+    weights_init = tf.Variable(tf.random.truncated_normal(weights_shape, stddev=0.01, seed=1), dtype=tf.float32)
     return weights_init
 
 
@@ -314,4 +314,4 @@ def _conv_tranpose_layer(net, num_filters, filter_size, strides):
 
 
 def max_pool(x, n):
-    return tf.nn.max_pool(x, ksize=[1, n, n, 1], strides=[1, n, n, 1], padding='VALID')
+    return tf.nn.max_pool2d(x, ksize=[1, n, n, 1], strides=[1, n, n, 1], padding='VALID')

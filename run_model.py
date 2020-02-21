@@ -25,7 +25,7 @@ for photo in test_photos:
     print("Processing image " + photo)
 
     # disable gpu if specified
-    config = tf.ConfigProto(
+    config =  tf.compat.v1.ConfigProto(
         device_count={'GPU': 0}) if use_gpu == "false" else None
 
     # get all available image resolutions
@@ -38,7 +38,7 @@ for photo in test_photos:
     # create placeholders for input images
     # x_ = tf.compat.v1.placeholder(tf.float32, [None, IMAGE_SIZE])
     # x_image = tf.reshape(x_, [-1, IMAGE_HEIGHT, IMAGE_WIDTH, 3])
-    x_ = tf.placeholder(tf.float32, [1, IMAGE_HEIGHT, IMAGE_WIDTH, 4])
+    x_ = tf.compat.v1.placeholder(tf.float32, [1, IMAGE_HEIGHT, IMAGE_WIDTH, 4])
 
     # generate enhanced image
     # enhanced = resnet(x_image)
