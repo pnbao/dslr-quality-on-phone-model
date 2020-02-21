@@ -61,7 +61,7 @@ for photo in test_photos:
         # get enhanced image
         enhanced_2d = sess.run(enhanced, feed_dict={x_: image_crop_2d})
         enhanced_image = np.reshape(
-            enhanced_2d, [IMAGE_HEIGHT, IMAGE_WIDTH, 3])
+            enhanced_2d, [1, IMAGE_HEIGHT, IMAGE_WIDTH, 4])
 
         before_after = np.hstack((image_crop, enhanced_image))
         photo_name = photo.rsplit(".", 1)[0]
